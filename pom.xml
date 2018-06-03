@@ -1,0 +1,106 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>no.uia.ehealth</groupId>
+  <artifactId>MappingFESTXmlModelToJavaModel</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <name>MappingFESTXmlModelToJavaModel</name>
+ 
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <commons-lang3.version>3.2.1</commons-lang3.version>
+  </properties>
+ 
+
+  <dependencies>
+    
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jvnet.jaxb2_commons</groupId>
+			<artifactId>jaxb2-basics</artifactId>
+			<version>0.6.5</version>
+		</dependency>
+
+ 
+
+		
+</dependencies>
+  <build>
+		<plugins>
+
+			<!-- Generating Code -->
+			<plugin>
+			
+				<groupId>org.jvnet.jaxb2.maven2</groupId>
+				<artifactId>maven-jaxb2-plugin</artifactId>
+				<version>0.13.3</version>
+			
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<schemaDirectory>src/main/resources/workflow</schemaDirectory>
+							<includeSchemas>
+                        <includeSchema>**/*.xsd</includeSchema>
+                    </includeSchemas>
+                    <extension>true</extension>
+                    <args>
+                        <arg>-enableIntrospection</arg>
+                        <arg>-XtoString</arg>
+                        <arg>-Xequals</arg>
+                        <arg>-XhashCode</arg>
+                        <arg>-XautoNameResolution</arg>
+                    </args>
+                    <removeOldOutput>true</removeOldOutput>
+                    <verbose>true</verbose>
+							<bindingDirectory>src/main/resources/workflow</bindingDirectory>
+							<generateDirectory>target/generated-sources/xjc/workflow</generateDirectory>
+							<generatePackage>no.uia.ehealth.workflow</generatePackage>
+							<!-- To include the following methods equals, hashcode, and toString in our generated code -->
+							<plugins>
+								<plugin>
+									<groupId>org.jvnet.jaxb2_commons</groupId>
+									<artifactId>jaxb2-basics</artifactId>
+									<version>0.9.4</version>
+								</plugin>
+							</plugins>
+						
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Making generated source code directory as a source folder -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.9</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${basedir}/target/generated-sources/xjc/workflow</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+		</plugins>
+	</build>
+</project>
